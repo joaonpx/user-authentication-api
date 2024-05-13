@@ -15,7 +15,7 @@ public record UserRegisterDTO(
         String name,
 
         @NotBlank(message = "Email is required!")
-        @Email
+        @Email(message = "Invalid email!")
         String email,
 
         @NotBlank(message = "Password is required!")

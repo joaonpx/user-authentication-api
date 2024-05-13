@@ -1,6 +1,6 @@
 package com.example.auth.controller;
 
-import com.example.auth.dto.UserDTO;
+import com.example.auth.dto.UserDetailsDTO;
 import com.example.auth.dto.UserRegisterDTO;
 import com.example.auth.service.UserService;
 import jakarta.validation.Valid;
@@ -18,7 +18,7 @@ public class UserController {
 
   @PostMapping("/register")
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDTO registerUser(@RequestBody @Valid UserRegisterDTO user) {
+  public UserDetailsDTO registerUser(@RequestBody @Valid UserRegisterDTO user) {
     return userService.save(user);
   }
 
@@ -30,19 +30,19 @@ public class UserController {
 
   @PutMapping("/update")
   @ResponseStatus(HttpStatus.OK)
-  public UserDTO updateUser(UserRegisterDTO user) {
+  public UserDetailsDTO updateUser(@RequestBody @Valid UserRegisterDTO user) {
     return userService.update(user);
   }
 
   @GetMapping("/{id}/info")
   @ResponseStatus(HttpStatus.OK)
-  public UserDTO getUserInfo(@PathVariable Long id) {
+  public UserDetailsDTO getUserInfo(@PathVariable Long id) {
     return userService.get(id);
   }
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<UserDTO> getAllUsers() {
+  public List<UserDetailsDTO> getAllUsers() {
     return userService.getAll();
   }
 }

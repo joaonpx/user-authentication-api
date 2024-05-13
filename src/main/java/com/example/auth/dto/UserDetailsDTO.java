@@ -2,12 +2,12 @@ package com.example.auth.dto;
 
 import com.example.auth.model.User;
 
-public record UserDTO(
+public record UserDetailsDTO(
         Long id,
         String name,
         String email
 ) {
-  public UserDTO(User user) {
+  public UserDetailsDTO(User user) {
     this(user.getId(), user.getName(), user.getEmail());
   }
 }

@@ -1,8 +1,9 @@
 package com.example.auth.service;
 
-import com.example.auth.dto.UserDTO;
+import com.example.auth.dto.UserDetailsDTO;
 import com.example.auth.dto.UserRegisterDTO;
 import com.example.auth.model.User;
+import com.example.auth.model.UserNotFoundException;
 import com.example.auth.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,11 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  public UserDTO save(UserRegisterDTO userRegisterDTO) {
+  public UserDetailsDTO save(UserRegisterDTO userRegisterDTO) {
     User user = new User();
     BeanUtils.copyProperties(userRegisterDTO, user);
     User savedUser = userRepository.save(user);
-    return new UserDTO(savedUser);
+    return new UserDetailsDTO(savedUser);
   }
 
   public void delete(Long id) {
@@ -30,38 +31,34 @@ public class UserService {
     if (optionalUser.isPresent()) {
       userRepository.delete(optionalUser.get());
     } else {
-      throw new RuntimeException("User not found with ID: " + id);
+      throw new UserNotFoundException("User not found with ID: " + id);
     }
   }
 
-  public UserDTO update(UserRegisterDTO userRegisterDTO) {
+  public UserDetailsDTO update(UserRegisterDTO userRegisterDTO) {
     User user = new User();
     BeanUtils.copyProperties(userRegisterDTO, user);
 
     Optional<User> optionalUser = userRepository.findById(user.getId());
 
+    User savedUser = userRepository.save(user);
+
     if (optionalUser.isPresent()) {
-      return new UserDTO(userRepository.save(optionalUser.get()));
+      return new UserDetailsDTO(savedUser);
     } else {
-      throw new RuntimeException("User not found");
+      throw new UserNotFoundException("User not found");
     }
   }
 
-  public UserDTO get(Long id) {
-    Optional<User> optionalUser = userRepository.findById(id);
-
-    if (optionalUser.isPresent()) {
-      return new UserDTO(optionalUser.get());
-    } else {
-      throw new RuntimeException("User not found with ID: " + id);
-    }
+  public UserDetailsDTO get(Long id) {
+    return new UserDetailsDTO(userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id)));
   }
 
-  public List<UserDTO> getAll() {
+  public List<UserDetailsDTO> getAll() {
     return userRepository
             .findAll()
             .stream()
-            .map(UserDTO::new)
+            .map(UserDetailsDTO::new)
             .toList();
   }
 }
