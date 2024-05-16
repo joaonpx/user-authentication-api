@@ -7,6 +7,7 @@ import com.example.auth.model.UserNotFoundException;
 import com.example.auth.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,13 @@ public class UserService {
   private UserRepository userRepository;
 
   public UserDetailsDTO save(UserRegisterDTO userRegisterDTO) {
+
+    String encryptedPassword = new BCryptPasswordEncoder().encode(userRegisterDTO.password());
+
     User user = new User();
     BeanUtils.copyProperties(userRegisterDTO, user);
+    user.setPassword(encryptedPassword);
+
     User savedUser = userRepository.save(user);
     return new UserDetailsDTO(savedUser);
   }

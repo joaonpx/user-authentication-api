@@ -1,6 +1,7 @@
 package com.example.auth.advice;
 
 import com.example.auth.model.UserNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -26,6 +27,14 @@ public class ApplicationExceptionHandler {
       errorMap.put(field.getField(), field.getDefaultMessage());
     }
 
+    return errorMap;
+  }
+
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public Map<String, String> handleDataIntegrityViolation() {
+    Map<String, String> errorMap = new HashMap<>();
+    errorMap.put("error", "User already registered!");
     return errorMap;
   }
 
