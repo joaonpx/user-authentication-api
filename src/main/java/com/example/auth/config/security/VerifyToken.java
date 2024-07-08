@@ -40,5 +40,6 @@ public class VerifyToken extends OncePerRequestFilter {
 
       SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthToken);
     }
+    filterChain.doFilter(request, response);
   }
 }

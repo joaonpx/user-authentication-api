@@ -2,6 +2,7 @@ package com.example.auth.controller;
 
 import com.example.auth.config.security.TokenService;
 import com.example.auth.dto.LoginDTO;
+import com.example.auth.dto.TokenDTO;
 import com.example.auth.dto.UserDetailsDTO;
 import com.example.auth.dto.UserRegisterDTO;
 import com.example.auth.model.User;
@@ -35,11 +36,9 @@ public class AuthController {
 
     Authentication auth = authenticationManager.authenticate(usernamePasswordAuthToken);
 
-    System.out.println(auth.getPrincipal());
-
     String token = tokenService.generateToken((User) auth.getPrincipal());
 
-    return ResponseEntity.ok(token);
+    return ResponseEntity.ok(new TokenDTO(token));
   }
 
   @PostMapping("/register")
