@@ -1,0 +1,8 @@
+CREATE TABLE tbl_users (
+    id BINARY(16) PRIMARY KEY NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    display_name VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'USER'
+);
