@@ -1,19 +1,22 @@
 package com.example.auth.dto;
 
 import com.example.auth.model.UserRole;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserRegisterDTO(
-        Long id,
+import java.util.UUID;
 
-        @NotBlank(message = "Name is required!")
-        String name,
+public record UserRegisterDTO(
+        UUID id,
+
+        @NotBlank(message = "Username is required!")
+        @Pattern(regexp = "^[a-z0-9._]+$", message = "Username must be in lowercase, with no accents or special characters, and may only contain . and _")
+        String username,
+
+        @NotBlank(message = "Display name is required!")
+        String displayName,
 
         @NotBlank(message = "Email is required!")
         @Email(message = "Invalid email!")

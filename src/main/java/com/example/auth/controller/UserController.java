@@ -2,13 +2,17 @@ package com.example.auth.controller;
 
 import com.example.auth.dto.UserDetailsDTO;
 import com.example.auth.dto.UserRegisterDTO;
+import com.example.auth.model.User;
 import com.example.auth.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/users")
@@ -24,7 +28,7 @@ public class UserController {
 
   @DeleteMapping("/delete/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteUser(@PathVariable Long id) {
+  public void deleteUser(@PathVariable UUID id) {
     userService.delete(id);
   }
 
@@ -36,13 +40,13 @@ public class UserController {
 
   @GetMapping("/{id}/info")
   @ResponseStatus(HttpStatus.OK)
-  public UserDetailsDTO getUserInfo(@PathVariable Long id) {
-    return userService.get(id);
+  public UserDetailsDTO getUserInfo(@PathVariable UUID id) {
+    return userService.findById(id);
   }
 
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
-  public List<UserDetailsDTO> getAllUsers() {
-    return userService.getAll();
+  public Page<User> getAllUsers(@PageableDefault(size = 5, page = 0) Pageable pageable) {
+    return userService.getAll(pageable);
   }
 }

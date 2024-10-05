@@ -1,15 +1,16 @@
 package com.example.auth.dto;
 
 import com.example.auth.model.User;
-import com.example.auth.model.UserRole;
+
+import java.util.UUID;
 
 public record UserDetailsDTO(
-        Long id,
-        String name,
-        String email,
-        UserRole role
+        UUID id,
+        String username,
+        String displayName,
+        String email
 ) {
   public UserDetailsDTO(User user) {
-    this(user.getId(), user.getName(), user.getEmail(), user.getRole());
+    this(user.getId(), user.getUsername(), user.getDisplayName(), user.getEmail());
   }
 }
