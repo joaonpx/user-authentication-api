@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.auth.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Slf4j
 @Service
 public class TokenService {
   @Value("${secret.key}")
@@ -20,6 +22,9 @@ public class TokenService {
   public String generateToken(User user) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+      log.info("c=TokenService m=generateToken msg=Success");
+
       return JWT
               .create()
               .withIssuer("auth")

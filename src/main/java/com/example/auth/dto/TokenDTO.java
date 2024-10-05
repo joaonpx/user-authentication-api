@@ -1,4 +1,9 @@
 package com.example.auth.dto;
 
-public record TokenDTO(String token) {
+import java.util.UUID;
+
+public record TokenDTO(
+        UUID id,
+        String token
+) {
 }
